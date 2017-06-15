@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>TO-DO</title>
+<link rel="stylesheet" href="index.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Noticia+Text:400,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Merienda:700" rel="stylesheet">
+
+<!-- Jquery -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<!-- Validator Plugin -->
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="row header ">
+      <h1 class="head">To-Do List <span class="glyphicon glyphicon-check"></span></h1>
+      <h3 class="headsub">Neat and Profficient <span class="glyphicon glyphicon-education"></span></h3>
+  </div>
+    <div class="row">
+      <div class="boxContent">
+        <form action="" id="todo">
+          <input type="text" class="form form-control" placeholder="What do you have to do?" name="Notes" id="Notes"><br/>
+          <button class="btn btn-success" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+    <div class="row main">
+      <div class> <ol class="list"></ol></div>
+    </div>
+</div>
+</body>
+
+<script>
+  $(document).ready(function(){
+      $("#todo").validate({
+        rules : {
+                Notes: "required"
+        },
+        messages :{
+              Notes : "Add event to the list"
+        },
+        // submitHandler: function(form){
+        //   form.submit();
+        // }
+        })
+//Validation over
+
+// Object is created
+$.fn.serializeObject = function() {
+   var o = {};
+   var a = this.serializeArray();
+   $.each(a, function() {
+       if (o[this.name] !== undefined) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+   });
+   return o;
+};
+   //Form submission
+
+   $("#todo").submit(function(event){
+     event.preventDefault();
+
+  // var $Notes = $('.list').text(data.Notes);
+     var formData = $("#todo").serializeObject();
+     var requestData = {
+       fields : formData
+     }
+     $.ajax({
+       url: 'https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?api_key=keyKOPe6gpndWefVv',
+       type: "POST",
+       data: JSON.stringify(requestData),
+       contentType: "application/json; charset=utf-8",
+       dataType: "json",
+        success: function(res) {
+            $("#todo").children("#Notes").val("")
+       }
+   })
+
+    var listdata = $("#Notes").val();
+   $(".list").append('<li class="item">' + listdata + "</li>")
+  $(".list").sortable()
+
+  // $(".item").click(function () {
+  //        $(".item").fadeOut("slow");
+  //       });
+
+//    $.get( "https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?maxRecords=3&view=Grid%20view&api_key=keyKOPe6gpndWefVv", function( data ) {
+// $(".lists").append(data)
+// });
+
+// //    $.ajax({
+// //   url: '',
+//     data : "json"
+//     dataType : "json"
+// //   success: function(data) {
+// //
+// //      $('.list')
+// //         .append($Notes)
+// //   },
+// //   type: 'GET'
+// // })
+
+})
+
+});
+
+</script>
+</html>
