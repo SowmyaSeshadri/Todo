@@ -35,7 +35,7 @@
          <div class="row main">
             <div>
                <div class="lists">
-                 <span class="sublists"></span>
+                
                </div>
             </div>
          </div>
@@ -102,13 +102,14 @@
                   var delurl = "https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo/"+data+"?api_key=keyKOPe6gpndWefVv"
                   $.ajax({
                   url: delurl,
-                  type: 'DELETE',
-                  success: function(result) {
-                      alert("Task Completed.")
-                              }
+                  type: 'DELETE'
+                  // success: function(result) {
+                  //     alert("Task Completed.")
+                  //             }
                        })
-})
+            })
             }
+
        //Form submission
 
        $("#todo").submit(function(event){
@@ -126,9 +127,9 @@
            dataType: "json",
             success: function(res) {
                 var asd = $("#Notes:first-child").val()
-                $(".lists").append("<li class='mar'>" +asd+ "<span class='glyphicon glyphicon-saved del'></li>")
+                $(".lists").append("<li class='sublist mar'>" +asd+ "<span class='glyphicon glyphicon-saved del'></li>")
                 $("#Notes").val(" ")
-                        }
+                  }
 
                })
 
@@ -150,12 +151,10 @@
           })
 
       })
+      $(".lists").sortable()
     })
 
-
-          $(".lists").sortable()
-
             });
-            
+
          </script>
       </html>
