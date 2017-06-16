@@ -27,6 +27,10 @@ body {
     .headsub {
       font-size: 32px; } }
 
+.del {
+  float: right;
+  margin-right: 50px; }
+
 .glyphicon-check {
   margin-left: 10px;
   color: #B2EBF2; }
@@ -55,22 +59,23 @@ body {
   display: inline-block;
   color: #00BCD4;
   list-style-type: none;
+  margin-left: 40px;
   background-color: #B2EBF2;
-  margin-bottom: 0px;
+  margin-bottom: 2px;
   font-size: 18px;
   cursor: pointer;
   font-family: "Noticia Text", serif;
   width: 50%;
+  text-align: left;
   border-radius: 5px; }
 
 .sublist {
-  margin-bottom: 0px;
-  margin-top: 0px; }
+  margin-left: 40px;
+  margin-top: 3px;
+  margin-bottom: 3px; }
 
 .check {
   text-decoration: line-through; }
 
-.defaultLi:first-child {
-  display: inline-block;
-  text-decoration: none;
-  list-style-type: none; }
+.mar {
+  margin-left: 40px; }

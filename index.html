@@ -34,15 +34,37 @@
          </div>
          <div class="row main">
             <div>
-               <ul class="lists">
-                 <!-- <li class="defaultLi"></li> -->
-               </ul>
+               <div class="lists">
+                 <span class="sublists"></span>
+               </div>
             </div>
          </div>
       </div>
    </body>
    <script>
       $(document).ready(function(){
+
+      var url ='https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?&view=Grid%20view&api_key=keyKOPe6gpndWefVv'
+        $.get(url, function( data ) {
+       $.each(data.records,function(index,value){
+       console.log(value.fields.Notes)
+       $(".lists").hide()
+                 .append('<li class="sublist" data-id ="'+value.id+'">' + value.fields.Notes + "<span class='glyphicon glyphicon-saved del'></li>")
+                 .fadeIn(200)
+               })
+
+         $(".sublist .del").on("click",function(){
+           var data = $(this).parent().data("id")
+           console.log(data)
+           $(this).parent().fadeOut(200)
+           deleteHandler(data)
+           })
+
+         })
+
+
+
+
           $("#todo").validate({
             rules : {
                     Notes: "required"
@@ -72,16 +94,30 @@
        });
        return o;
       };
+
+      function deleteHandler(data){
+
+        $(".sublist").on("click",function(){
+                  console.log(data)
+                  var delurl = "https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo/"+data+"?api_key=keyKOPe6gpndWefVv"
+                  $.ajax({
+                  url: delurl,
+                  type: 'DELETE',
+                  success: function(result) {
+                      alert("Task Completed.")
+                              }
+                       })
+})
+            }
        //Form submission
 
        $("#todo").submit(function(event){
          event.preventDefault();
-
-      // var $Notes = $('.list').text(data.Notes);
+         $(".lists").empty()
          var formData = $("#todo").serializeObject();
          var requestData = {
            fields : formData
-         }
+                 }
          $.ajax({
            url: 'https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?api_key=keyKOPe6gpndWefVv',
            type: "POST",
@@ -89,53 +125,36 @@
            contentType: "application/json; charset=utf-8",
            dataType: "json",
             success: function(res) {
-                $("#todo").children("#Notes").val("")
-           }
-       })
+                var asd = $("#Notes:first-child").val()
+                $(".lists").append("<li class='mar'>" +asd+ "<span class='glyphicon glyphicon-saved del'></li>")
+                $("#Notes").val(" ")
+                        }
 
-        var listdata = $("#Notes").val();
-       $(".lists").append('<li class="sublist">' + listdata + "</li>")
+               })
 
+      var url ='https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?&view=Grid%20view&api_key=keyKOPe6gpndWefVv'
 
-//       var url ='https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?&view=Grid%20view&api_key=keyKOPe6gpndWefVv'
-//        $.get(url, function( data ) {
-//
-//       $.each(data.records,function(index,value){
-//       console.log(value.fields.Notes)
-//       $(".lists").hide()
-//                 .append('<li class="sublist">' + value.fields.Notes + "<span id='del' class='glyphicon glyphicon-saved'></li>")
-//                 .fadeIn(200)
-//
-//               })
-// })
+       $.get(url, function( data ) {
+      $.each(data.records,function(index,value){
+      console.log(value.fields.Notes)
+      $(".lists").hide()
+                .append('<li class="sublist" data-id ="'+value.id+'">' + value.fields.Notes + "<span class='glyphicon glyphicon-saved del'></li>")
+                .fadeIn(200)
+              })
 
-  
-//       var idData = $(data.id)
-//
-//       var delurl = "https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo/"+idData+"?api_key=keyKOPe6gpndWefVv"
-// $("#del").on("click",function(delUr){
-// // var delurl = "https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo/"+idData+"?api_key=keyKOPe6gpndWefVv"
-//   console.log(delUrl)
-// //$.ajax({
-//
-//
-// //
-// //     url: '',
-// // type: 'DELETE',
-// // success: function(result) {
-// //     alert("Deleted");
-// //             }
-//   //    })
+        $(".sublist .del").on("click",function(){
+          var data = $(this).parent().data("id")
+          console.log(data)
+          $(this).parent().fadeOut(200)
+          deleteHandler(data)
+          })
 
-      //
-      // })
-      $(".lists li").dblclick(function(){
-        $(this).addClass("check").fadeOut(700);
       })
-        $(".lists").sortable()
-      })
+    })
 
 
-      });
-   </script>
-</html>
+          $(".lists").sortable()
+
+            });
+         </script>
+      </html>
