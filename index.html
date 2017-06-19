@@ -26,7 +26,7 @@
          </div>
          <div class="row">
             <div class="boxContent" >
-               <form action="" id="todo" >
+               <form action="" id="todo">
                   <input type="text" class="form form-control" placeholder="What do you have to do?" name="Notes" id="Notes"><br/>
                   <button class="btn btn-success" type="submit">Add</button>
                </form>
@@ -43,6 +43,16 @@
    </body>
    <script>
       $(document).ready(function(){
+
+        $("#todo").validate({
+        rules : {
+                Notes: "required"
+        },
+        messages :{
+              Notes : "Add event to the list"
+        }
+
+        })
 
       var url ='https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?&view=Grid%20view&api_key=keyKOPe6gpndWefVv'
         $.get(url, function( data ) {
@@ -62,15 +72,7 @@
 
          })
 
-         $("#todo").validate({
-         rules : {
-                 Notes: "required"
-         },
-         messages :{
-               Notes : "Add event to the list"
-         }
 
-         })
       //Validation over
 
       // Object is created
@@ -98,23 +100,19 @@
                   $.ajax({
                   url: delurl,
                   type: 'DELETE'
-                  // success: function(result) {
-                  //     alert("Task Completed.")
-                  //             }
                        })
             })
             }
-
+if(("#Notes") === " "){
        //Form submission
-
-       $("#todo").submit(function(event){
+     $("#todo").submit(function(event){
 
          event.preventDefault();
          $(".lists").empty()
          var formData = $("#todo").serializeObject();
          var requestData = {
            fields : formData
-                }
+         }
          $.ajax({
            url: 'https://api.airtable.com/v0/app2HAyGf9rbZ8FLr/Todo?api_key=keyKOPe6gpndWefVv',
            type: "POST",
@@ -149,7 +147,7 @@
       })
       $(".lists").sortable()
     })
-
+}
             });
 
          </script>
